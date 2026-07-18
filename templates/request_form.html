@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}{% if edit %}Редактирование{% else %}Новая заявка{% endif %}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{% if edit %}Редактирование заявки{% else %}Новая заявка{% endif %}</h1>
+    <p>{% if edit %}Изменение статуса или исполнителя{% else %}Заполните форму для создания заявки{% endif %}</p>
+</div>
+
+<div class="card form-card">
+    {% if edit %}
+        <form action="/requests/{{ request.id }}/update_status" method="post">
+            <div class="form-row">
+                <label for="status">Статус</label>
+                <select name="status" id="status">
+                    {% for s in statuses %}
+                        <option value="{{ s }}" {% if s == request.status %}selected{% endif %}>{{ s|capitalize }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Обновить статус</button>
+            </div>
+        </form>
+        <hr style="border: none; border-top: 1px solid var(--border); margin: 24px 0;">
+        <form action="/requests/{{ request.id }}/update_executor" method="post">
+            <div class="form-row">
+                <label for="executor_id">Исполнитель</label>
+                <select name="executor_id" id="executor_id">
+                    {% for emp in employees %}
+                        <option value="{{ emp.id }}" {% if emp.id == request.executor_id %}selected{% endif %}>{{ emp.full_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Сменить исполнителя</button>
+            </div>
+        </form>
+    {% else %}
+        <form action="/requests/create" method="post">
+            <div class="form-row" style="margin-bottom: 16px;">
+                <label for="author_id">Автор</label>
+                <select name="author_id" id="author_id" required>
+                    {% for emp in employees %}
+                        <option value="{{ emp.id }}">{{ emp.full_name }} — {{ emp.department }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-row" style="margin-bottom: 16px;">
+                <label for="executor_id">Исполнитель</label>
+                <select name="executor_id" id="executor_id" required>
+                    {% for emp in employees %}
+                        <option value="{{ emp.id }}">{{ emp.full_name }} — {{ emp.department }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-row" style="margin-bottom: 16px;">
+                <label for="description">Описание</label>
+                <textarea name="description" id="description" rows="4" placeholder="Опишите суть заявки…" required></textarea>
+            </div>
+            <div class="form-row" style="margin-bottom: 16px;">
+                <label for="deadline">Срок выполнения</label>
+                <input type="datetime-local" name="deadline" id="deadline" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Создать заявку</button>
+                <a href="/" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    {% endif %}
+</div>
+
+{% if edit %}
+<a href="/" class="back-link">← Назад к списку</a>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Сотрудники{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Сотрудники</h1>
+    <p>Справочник сотрудников организации</p>
+</div>
+
+<div class="card">
+    <h2 class="card-title">Добавить сотрудника</h2>
+    <form action="/employees/add" method="post" class="form-grid">
+        <div class="form-row">
+            <label for="full_name">ФИО</label>
+            <input type="text" name="full_name" id="full_name" placeholder="Иванов Иван Иванович" required>
+        </div>
+        <div class="form-row">
+            <label for="department">Подразделение</label>
+            <input type="text" name="department" id="department" placeholder="IT" required>
+        </div>
+        <div class="form-row">
+            <label for="position">Должность</label>
+            <input type="text" name="position" id="position" placeholder="Разработчик" required>
+        </div>
+        <div class="form-row">
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    <h2 class="card-title">Список сотрудников ({{ employees|length }})</h2>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>ФИО</th>
+                    <th>Подразделение</th>
+                    <th>Должность</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emp in employees %}
+                <tr>
+                    <td class="text-muted">#{{ emp.id }}</td>
+                    <td><strong>{{ emp.full_name }}</strong></td>
+                    <td>{{ emp.department }}</td>
+                    <td>{{ emp.position }}</td>
+                    <td>
+                        <a href="/employees/{{ emp.id }}/delete" class="btn btn-danger" onclick="return confirm('Удалить сотрудника?')">Удалить</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

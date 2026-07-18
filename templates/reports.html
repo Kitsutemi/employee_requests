@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Отчёты{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Отчёты</h1>
+    <p>Сводная статистика по заявкам</p>
+</div>
+
+<div class="report-grid">
+    <div class="stat-card stat-overdue">
+        <div class="stat-label">Просроченных заявок</div>
+        <div class="stat-value">{{ overdue_count }}</div>
+    </div>
+    {% for status, count in status_counts %}
+    <div class="stat-card">
+        <div class="stat-label">{{ status }}</div>
+        <div class="stat-value">{{ count }}</div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="card">
+    <h2 class="card-title">Выполненные заявки по исполнителям</h2>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Исполнитель</th>
+                    <th>Выполнено заявок</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in done_by_executor %}
+                <tr>
+                    <td><strong>{{ item.full_name }}</strong></td>
+                    <td><span class="count">{{ item.done_count }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

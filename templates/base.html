@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Учёт заявок{% endblock %} — Заявки сотрудников</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <span class="logo-icon">📋</span>
+                Учёт заявок
+            </a>
+            <nav>
+                <a href="/" {% if active_page == 'requests' %}class="active"{% endif %}>Заявки</a>
+                <a href="/employees" {% if active_page == 'employees' %}class="active"{% endif %}>Сотрудники</a>
+                <a href="/requests/new" {% if active_page == 'new_request' %}class="active"{% endif %}>Создать заявку</a>
+                <a href="/reports" {% if active_page == 'reports' %}class="active"{% endif %}>Отчёты</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        Система учёта заявок сотрудников
+    </footer>
+</body>
+</html>
